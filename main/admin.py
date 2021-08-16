@@ -8,9 +8,17 @@ from django.urls import reverse
 
 from .models import nba_players_21
 
+## To add in a new dataset follow these steps
+# 1. Create new model with the same fields as listed here
+# 2. Ensure dataset is cleaned with header row removed
+# 2. Change name inside the for loop to match new model
+# 3. Register it at the bottom of this page
+
+# Creating upload form field on admin page
 class CsvImportForm(forms.Form):
     csv_upload = forms.FileField()
 
+# Handling csv uploads on admin page which populate django model
 class nbaAdmin(admin.ModelAdmin):
     list_display = ('fullName','team','position','age','gp','mpg','minP','usage','toRate','fta',
     'ftP','fga2','fga2P','fga3','fga3P','efg','ts','ppg','rpg','trbP','apg','astP','spg','bpg','topg','viv','ortg','drtg')
