@@ -1,0 +1,13 @@
+{% extends 'players/base/base.html' %}
+
+{% load static %}
+
+{% block site_css %}
+<link rel="stylesheet" href="{% static 'players/styles/players.css' %}" />
+{% endblock  %}
+
+{% block main_heading %}Fantasy Basketball Players{% endblock  %}
+
+{% block body %}
+    <h2 class="home_body_header">Welcome to the players page</h2>
+{% endblock  %}
