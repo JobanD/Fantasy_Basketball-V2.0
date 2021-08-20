@@ -1,0 +1,31 @@
+.player_body_header {
+  font-style: oblique;
+  background-color: green;
+}
+
+#player-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#player-table td,
+#player-table th {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+#player-table tr:nth-child(even) {
+  background-color: beige;
+}
+
+#player-table tr:hover {
+  background-color: #ddd;
+}
+
+#player-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04aa6d;
+  color: white;
+}

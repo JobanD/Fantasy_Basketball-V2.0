@@ -3,11 +3,29 @@
 {% load static %}
 
 {% block site_css %}
-<link rel="stylesheet" href="{% static 'players/styles/players.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/players.css' %}" />
 {% endblock  %}
 
 {% block main_heading %}Fantasy Basketball Players{% endblock  %}
 
 {% block body %}
-    <h2 class="home_body_header">Welcome to the players page</h2>
+    <h2 class="player_body_header">Welcome to the players page</h2>
+    <table id="player-table">
+        <tr class='header-row'>
+            <th>Name</th>
+            <th>Position</th>
+            <th>PPG</th>
+            <th>APG</th>
+            <th>RPG</th>
+            <th>SPG</th>
+            <th>BPG</th>
+            <th>TOPG</th>
+            <th>FG%</th>
+            <th>FT%</th>
+            <th>3s</th>
+        </tr>
+        {% for player in players21 %}
+            {% include 'players/includes/player-details.html' with name=player.fullName pos=player.position ppg=player.ppg  apg=player.apg rpg=player.rpg spg=player.spg bpg=player.bpg topg=player.topg fgP=player.efg ftP=player.ftP threes=player.fga3 %}
+        {% endfor %}
+    </table>
 {% endblock  %}
