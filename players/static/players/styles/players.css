@@ -29,3 +29,11 @@
   background-color: #04aa6d;
   color: white;
 }
+
+input[type="checkbox"] {
+  border: 1px solid black;
+}
+
+#filterTable {
+  background-color: orange;
+}

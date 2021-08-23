@@ -1,31 +1,67 @@
-{% extends 'players/base/base.html' %}
+{% extends 'main/base/base.html' %}
 
 {% load static %}
 
 {% block site_css %}
     <link rel="stylesheet" href="{% static 'styles/players.css' %}" />
-{% endblock  %}
+{% endblock %}
 
-{% block main_heading %}Fantasy Basketball Players{% endblock  %}
+{% block main_heading %}Fantasy Basketball Players{% endblock %}
 
 {% block body %}
     <h2 class="player_body_header">Welcome to the players page</h2>
+
+    <form id="filterTable">
+        <input type="checkbox" id="ppgCheck" value="ppgCheck">
+        <label for="ppgCheck">Ppg</label>
+
+        <input type="checkbox" id="apgCheck" value="apgCheck">
+        <label for="apgCheck">Apg</label>
+
+        <input type="checkbox" id="rpgCheck" value="rpgCheck">
+        <label for="rpgCheck">Rpg</label>
+
+        <input type="checkbox" id="spgCheck" value="spgCheck">
+        <label for="spgCheck">Spg</label>
+
+        <input type="checkbox" id="bpgCheck" value="bpgCheck">
+        <label for="bpgCheck">Bpg</label>
+
+        <input type="checkbox" id="topgCheck" value="topgCheck">
+        <label for="topgCheck">Topg</label>
+
+        <input type="checkbox" id="fg%Check" value="fg%Check">
+        <label for="fg%Check">Fg%</label>
+
+        <input type="checkbox" id="ft%Check" value="ft%Check">
+        <label for="ft%Check">Ft%</label>
+
+        <input type="checkbox" id="3sCheck" value="3sCheck">
+        <label for="3sCheck">3s</label>
+    </form>
+
+    <br>
+
     <table id="player-table">
-        <tr class='header-row'>
-            <th>Name</th>
-            <th>Position</th>
-            <th>PPG</th>
-            <th>APG</th>
-            <th>RPG</th>
-            <th>SPG</th>
-            <th>BPG</th>
-            <th>TOPG</th>
-            <th>FG%</th>
-            <th>FT%</th>
-            <th>3s</th>
-        </tr>
-        {% for player in players21 %}
-            {% include 'players/includes/player-details.html' with name=player.fullName pos=player.position ppg=player.ppg  apg=player.apg rpg=player.rpg spg=player.spg bpg=player.bpg topg=player.topg fgP=player.efg ftP=player.ftP threes=player.fga3 %}
-        {% endfor %}
+        <thead>
+            <tr class='header-row'>
+                <th>Name</th>
+                <th>Position</th>
+                <th>PPG</th>
+                <th>APG</th>
+                <th>RPG</th>
+                <th>SPG</th>
+                <th>BPG</th>
+                <th>TOPG</th>
+                <th>FG%</th>
+                <th>FT%</th>
+                <th>3s</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in players21 %}
+                {% include 'players/includes/player-details.html' with name=player.fullName pos=player.position ppg=player.ppg  apg=player.apg rpg=player.rpg spg=player.spg bpg=player.bpg topg=player.topg fgP=player.efg ftP=player.ftP threes=player.fga3 %}
+            {% endfor %}
+        </tbody>
     </table>
-{% endblock  %}
+{% endblock %}

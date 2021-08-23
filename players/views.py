@@ -7,6 +7,5 @@ from main.models import nba_players_21
 
 def players(request):
     players21 = nba_players_21.objects.all()       # fetch all instances of this db
-    return render(request, 'players/players.html', {
-        'players21': players21
-    })
+    context = {'players21': players21}
+    return render(request, 'players/players.html', context)
