@@ -11,57 +11,37 @@
 {% block body %}
     <h2 class="player_body_header">Welcome to the players page</h2>
 
-    <form id="filterTable">
-        <input type="checkbox" id="ppgCheck" value="ppgCheck" checked>
+    <form method="POST" id="filterTable">
+        {% csrf_token %}
+        <input type="checkbox" id="ppgCheck" value="pointZ" name="categories" checked>
         <label for="ppgCheck">Ppg</label>
 
-        <input type="checkbox" id="apgCheck" value="apgCheck" checked>
+        <input type="checkbox" id="apgCheck" value="assistZ" name="categories" checked>
         <label for="apgCheck">Apg</label>
 
-        <input type="checkbox" id="rpgCheck" value="rpgCheck" checked>
+        <input type="checkbox" id="rpgCheck" value="reboundZ" name="categories" checked>
         <label for="rpgCheck">Rpg</label>
 
-        <input type="checkbox" id="spgCheck" value="spgCheck" checked>
+        <input type="checkbox" id="spgCheck" value="stealZ" name="categories" checked>
         <label for="spgCheck">Spg</label>
 
-        <input type="checkbox" id="bpgCheck" value="bpgCheck" checked>
+        <input type="checkbox" id="bpgCheck" value="blockZ" name="categories" checked>
         <label for="bpgCheck">Bpg</label>
 
-        <input type="checkbox" id="topgCheck" value="topgCheck" checked>
+        <input type="checkbox" id="topgCheck" value="turnoverZ" name="categories" checked>
         <label for="topgCheck">Topg</label>
 
-        <input type="checkbox" id="fg%Check" value="fg%Check" checked>
+        <input type="checkbox" id="fg%Check" value="fgZ" name="categories" checked>
         <label for="fg%Check">Fg%</label>
 
-        <input type="checkbox" id="ft%Check" value="ft%Check" checked>
+        <input type="checkbox" id="ft%Check" value="ftZ" name="categories" checked>
         <label for="ft%Check">Ft%</label>
 
-        <input type="checkbox" id="3sCheck" value="3sCheck" checked>
+        <input type="checkbox" id="3sCheck" value="threeZ" name="categories" checked>
         <label for="3sCheck">3s</label>
+
+        <button type="submit" class="btn btn-info">Submit</button>
     </form>
 
-    <br>
-
-    <table id="player-table">
-        <thead>
-            <tr class='header-row'>
-                <th>Name</th>
-                <th>Position</th>
-                <th>PPG</th>
-                <th>APG</th>
-                <th>RPG</th>
-                <th>SPG</th>
-                <th>BPG</th>
-                <th>TOPG</th>
-                <th>FG%</th>
-                <th>FT%</th>
-                <th>3s</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for player in players21 %}
-                {% include 'players/includes/player-details.html' with name=player.fullName pos=player.position ppg=player.ppg  apg=player.apg rpg=player.rpg spg=player.spg bpg=player.bpg topg=player.topg fgP=player.efg ftP=player.ftP threes=player.fga3 %}
-            {% endfor %}
-        </tbody>
-    </table>
+    {{ df21final|safe }}
 {% endblock %}
