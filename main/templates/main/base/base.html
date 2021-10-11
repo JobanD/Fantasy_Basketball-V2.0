@@ -15,12 +15,15 @@
     <header id="main-header">
       <h1>{% block main_heading %}{%endblock %}</h1>
       {% block header_content %}
-        <div class="topnav">
-          <a class="active" href="#home">Home</a>
-          <a href="/players" id="players-button">Players</a>
-          <a href="#contact">Contact</a>
-          <a href="#about">About</a>
-        </div>
+       {% with request.resolver_match.url_name as url_name %}
+          <div class="topnav">
+            <a class="{% if url_name == 'main' %}active{% endif %}" href="/">Home</a>
+            <a class="{% if url_name == 'players' %}active{% endif %}" href="/players" id="players-button">Players</a>
+            <a class="{% if url_name == 'teams' %}active{% endif %}" href="/teams">Teams</a>
+            <a class="{% if url_name == 'home' %}active{% endif %}" href="#contact">Contact</a>
+            <a class="{% if url_name == 'home' %}active{% endif %}" href="#about">About</a>
+          </div>
+        {% endwith %}
       {% endblock %}
     </header>
 

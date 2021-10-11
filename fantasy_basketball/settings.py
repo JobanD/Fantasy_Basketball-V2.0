@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'players',
+    'teams',
 ]
 
 MIDDLEWARE = [
@@ -128,6 +129,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'main/static/main'),
     os.path.join(BASE_DIR, 'players/static/players'),
+    os.path.join(BASE_DIR, 'teams/static/teams'),
 ]
 
 # Default primary key field type

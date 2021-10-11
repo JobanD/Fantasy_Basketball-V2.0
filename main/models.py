@@ -36,17 +36,4 @@ class nba_players_21 (models.Model):
     viv = models.FloatField(_("viv"), blank=True)           # measures a player’s ability to produce in points, assists, and rebounds. The average player will score around a five on the index
     ortg = models.FloatField(_("ortg"), blank=True)         # points produced by a player per 100 total individual possessions.
     drtg = models.FloatField(_("drtg"), blank=True)         # points saved by a player per 100 total possessions
-    
-    # Z score values below based off other fields
-    # pointZ = models.FloatField(_("pointZ"), blank=True)
-    # assistZ = models.FloatField(_("pointZ"), blank=True)
-    # reboundZ = models.FloatField(_("pointZ"), blank=True)
-    # stealZ = models.FloatField(_("pointZ"), blank=True)
-    # blockZ = models.FloatField(_("pointZ"), blank=True)
-    # turnoverZ = models.FloatField(_("pointZ"), blank=True)
-    # fgZ = models.FloatField(_("pointZ"), blank=True)
-    # ftZ = models.FloatField(_("pointZ"), blank=True)
-    # threeZ = models.FloatField(_("pointZ"), blank=True)
-
-    # def save(self):
         

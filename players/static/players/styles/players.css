@@ -3,26 +3,26 @@
   background-color: green;
 }
 
-#player-table {
+table {
   border-collapse: collapse;
   width: 100%;
 }
 
-#player-table td,
-#player-table th {
+table td,
+table th {
   border: 1px solid black;
   padding: 8px;
 }
 
-#player-table tr:nth-child(even) {
+table tr:nth-child(even) {
   background-color: beige;
 }
 
-#player-table tr:hover {
+table tr:hover {
   background-color: #ddd;
 }
 
-#player-table th {
+table th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
@@ -36,4 +36,13 @@ input[type="checkbox"] {
 
 #filterTable {
   background-color: orange;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+}
+th {
+  cursor: pointer;
 }
