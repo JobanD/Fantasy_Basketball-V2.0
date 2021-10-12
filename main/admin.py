@@ -6,10 +6,10 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from .models import nba_players_21
+from .models import nba_players_21, nba_players_20, nba_players_19
 
 ## To add in a new dataset follow these steps
-# 1. Create new model with the same fields as listed here
+# 1. Create new model with the same fields as listed here, import it
 # 2. Ensure dataset is cleaned with header row removed
 # 2. Change name inside the for loop to match new model
 # 3. Register it at the bottom of this page
@@ -44,7 +44,7 @@ class nbaAdmin(admin.ModelAdmin):
             # loop through the points in each line seperating by comma (each player's stats)
             for x in csv_data:
                 fields = x.split(",")
-                created = nba_players_21.objects.update_or_create(
+                created = nba_players_19.objects.update_or_create(
                     fullName = fields[0],
                     team = fields[1],
                     position = fields[2],
@@ -84,3 +84,5 @@ class nbaAdmin(admin.ModelAdmin):
 
 
 admin.site.register(nba_players_21, nbaAdmin)
+admin.site.register(nba_players_20, nbaAdmin)
+admin.site.register(nba_players_19, nbaAdmin)

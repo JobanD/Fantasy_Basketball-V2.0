@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from main.models import nba_players_21
 #from forms import *
 
+from . import fantasy_math as fm
+
 import pandas as pd
 import numpy as np
 import scipy.stats as stats
@@ -22,33 +24,9 @@ def players(request):
         'TOPG', 'VIV', 'ORTG', 'DRTG'
     ]
 
-    # Create new columns to hold PER GAME STATS for categories which don't already have to simplify z score calc and display consistency
-    df21['3PG'] = round((df21['3PA']*df21['3P%'])/df21['GP'], 2)
-    df21['FTM'] = df21['FTA'] * df21['FT%']
-    df21['FGA'] = (df21['2PA'] + df21['3PA']) / df21['GP']
-    df21['FGM'] = ((df21['2PA'] * df21['2P%']) + (df21['3PA'] * df21['3P%'])) / df21['GP']
-    df21['FG%'] = round(df21['FGM']/df21['FGA'],3)
-
-    # Calculate total fantasy value based on 9-cat traditionally used
-    # Formula based on z scores - adjust as needed
-    # FUTURE ------------------------------------------------------------ Adjust formula to only consider checked categories
-    df21['pointZ'] = stats.zscore(df21['PPG'])
-    df21['assistZ'] = stats.zscore(df21['APG'])
-    df21['reboundZ'] = stats.zscore(df21['RPG'])
-    df21['stealZ'] = stats.zscore(df21['SPG'])
-    df21['blockZ'] = stats.zscore(df21['BPG'])
-    df21['turnoverZ'] = (-1)*stats.zscore(df21['TOPG'])             # negative stat so multiply by -1
-    df21['threeZ'] = stats.zscore(df21['3PG'])
-    # The ft% and fg% categories require a little more math to accurately portray their z scores/impact
-    avgFT = np.average(df21['FT%'])  
-    avgFG = np.average(df21['FG%'])  
-    df21['ftImpact'] = (df21['FT%'] - avgFT) * (df21['FTA']/df21['GP'])
-    df21['fgImpact'] = (df21['FG%'] - avgFG) * df21['FGA']                  # FGA is already per game as calc above
-    df21['ftZ'] = stats.zscore(df21['ftImpact'])
-    df21['fgZ'] = stats.zscore(df21['fgImpact'])
-    zlist = ['pointZ', 'assistZ','reboundZ', 'stealZ', 'blockZ', 'turnoverZ', 'threeZ', 'ftZ', 'fgZ']
-    df21['9 Cat Value'] = round(df21[zlist].sum(axis=1),2)
-    df21['Punting Value'] = 0
+    fm.per_game(df21)               # From fantasy_math.py
+    fm.create_z_scores(df21)
+    fm.create_fantasy_value(df21)
 
     # Calc fantasy value based on z scores and selected categories
     if request.method == 'POST':

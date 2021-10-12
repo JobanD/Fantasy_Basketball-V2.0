@@ -1,0 +1,11 @@
+<!-- Add button to admin page of /admin/main/nba_players_21
+Button allows admin users to import a csv into a django model -->
+
+{% extends "admin/change_list.html" %}
+{% load static %}
+{% block content %}
+
+<a href="upload-csv/">Upload a csv file</a>
+
+{{ block.super }}   <!-- grab content from parent block to keep original format but just include button within-->
+{% endblock %}

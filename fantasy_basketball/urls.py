@@ -21,7 +21,8 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('main.urls'), name="main"),                    # url for main app
-    path('players/', include('players.urls'), name="players"),      # player app
-    path('teams/', include('teams.urls'), name="teams")             # teams app
+    path('', include('main.urls'), name="main"),
+    path('players/', include('players.urls'), name="players"),
+    path('teams/', include('teams.urls'), name="teams"),
+    path('authentication/', include('authentication.urls'), name="authentication"),
 ]
