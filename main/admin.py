@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from .models import nba_players_21, nba_players_20, nba_players_19
+from .models import nba_players_21, nba_players_20, nba_players_19, nba_players_18
 
 ## To add in a new dataset follow these steps
 # 1. Create new model with the same fields as listed here, import it
@@ -38,13 +38,13 @@ class nbaAdmin(admin.ModelAdmin):
                 messages.warning(request, 'Wrong file type, please try again with a csv')
                 return HttpResponseRedirect(request.path_info)
 
-            file_data = csv_file.read().decode("utf-8")
+            file_data = csv_file.read().decode("utf-8-sig")             # Added -sig to remove BOM encoding in beginning of dataset
             csv_data = file_data.split("\n")            # split by lines (each player)
 
             # loop through the points in each line seperating by comma (each player's stats)
             for x in csv_data:
                 fields = x.split(",")
-                created = nba_players_19.objects.update_or_create(
+                created = nba_players_21.objects.update_or_create(
                     fullName = fields[0],
                     team = fields[1],
                     position = fields[2],
@@ -86,3 +86,4 @@ class nbaAdmin(admin.ModelAdmin):
 admin.site.register(nba_players_21, nbaAdmin)
 admin.site.register(nba_players_20, nbaAdmin)
 admin.site.register(nba_players_19, nbaAdmin)
+admin.site.register(nba_players_18, nbaAdmin)

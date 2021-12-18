@@ -7,3 +7,47 @@ p {
   width: 100%;
   text-align: center;
 }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table td,
+table th {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+table tr:nth-child(even) {
+  background-color: beige;
+}
+
+table tr:hover {
+  background-color: #ddd;
+}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04aa6d;
+  color: white;
+}
+
+input[type="checkbox"] {
+  border: 1px solid black;
+}
+
+#filterTable {
+  background-color: orange;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+}
+th {
+  cursor: pointer;
+}
