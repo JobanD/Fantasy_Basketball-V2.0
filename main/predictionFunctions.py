@@ -1,3 +1,4 @@
+from os import error
 import pandas as pd
 import numpy as np
 import scipy.stats as stats
@@ -60,19 +61,27 @@ def find_player(name, season, df):
 # Return distance vectors for any given player to find most similar within given dataframe       
 def compare(player_name, season_id, df):
     
+    # If player doesn't exist return
+    if (((df['Season_ID'] == season_id) & (df['Name'] == player_name)).any() == False):
+        return
+        
     # Where distance vectors will be stored
     player_dist = []
     
+    # Use list if different stats should have different weights
+    # IMPORTANT: Keep list as long as list of stats being counted
+    weighted_nums = [ 1, 1, 1.5, 1.5, 0.5, 1, 1, 1, 1]
+    
     # Create vector for current players normalized stats
     current_player_vector = np.array([
-        (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'MPG_norm']),
+        #(df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'MPG_norm']),
         (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FTA_norm']),
-        (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FTp_norm']),
+        #(df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FTp_norm']),
         (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FGA2_norm']),
-        (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FG2p_norm']),
+        #(df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FG2p_norm']),
         (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FGA3_norm']),
-        (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FG3p_norm']),
-        (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'EFG_norm']),
+        #(df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FG3p_norm']),
+        #(df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'EFG_norm']),
         (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'PPG_norm']),
         (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'RPG_norm']),
         (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'APG_norm']),
@@ -84,14 +93,14 @@ def compare(player_name, season_id, df):
     # iterate through other players and compare each players vector to our given player
     for row in df.itertuples():
         compared_player_vector = np.array([
-            row.MPG_norm,
+            #row.MPG_norm,
             row.FTA_norm,
-            row.FTp_norm,
+            #row.FTp_norm,
             row.FGA2_norm,
-            row.FG2p_norm,
+            #row.FG2p_norm,
             row.FGA3_norm,
-            row.FG3p,
-            row.EFG_norm,
+            #row.FG3p,
+            #row.EFG_norm,
             row.PPG_norm,
             row.RPG_norm,
             row.APG_norm,
@@ -100,15 +109,84 @@ def compare(player_name, season_id, df):
             row.TOPG_norm
         ])
         
+        # Vectorize euclidean distance so we can work with it, calc Percent Error and store player name/season
         vfunc = np.vectorize(calc_distance)
         distance_vect = vfunc(current_player_vector, compared_player_vector)
-        num = np.sum((distance_vect)) / len(distance_vect)
+        weighted_dist = distance_vect * weighted_nums                               # USE if using weighted stats
+        num = np.sum(np.abs(distance_vect)) / len(distance_vect)
+        weighted_num = np.sum(np.abs(weighted_dist)) / len(distance_vect)
         percent_error = round((1-num),1)
+        
         player = row.Name
         season = row.Season_ID
-        player_compare_info = [str(player),str(season),num,percent_error]
-        player_dist.append(player_compare_info)
+        player_compare_info = [str(player), str(season), num, percent_error]
+        player_dist.append(weighted_num)
         
-    return player_dist
+    df['Distance'] = player_dist
+    
+    # Rank by shortest distance to find most similar players
+    ranked_df = df.sort_values('Distance')
+        
+    return ranked_df
+
+def project_stats(player_name, season_id, df):
+    
+    # If player doesn't exist return
+    if (((df['Season_ID'] == season_id) & (df['Name'] == player_name)).any() == False):
+        return
+    
+    ranked_df = compare(player_name, season_id, df)
+    
+    seasons = [
+        '2017-18',
+        '2018-19',
+        '2019-20',
+        '2020-21',
+        '2021-22'
+    ]
+    
+    stats = [
+        'MPG',
+        'FTA',
+        'FTp',
+        'FGA2',
+        'FG2p',
+        'FGA3',
+        'FG3p',
+        'EFG',
+        'PPG',
+        'RPG',
+        'APG',
+        'SPG',
+        'BPG',
+        'TOPG'
+    ]
+    
+    projected_stats = {}
+    
+    for col in stats:
+        sum_stat = 0
+        sum_weight = 0
+        # Loop through top 10 most similar players
+        for index, row in ranked_df.iloc[1:11].iterrows():
+            # Skip if season is 2020-21 because then the player has no next season
+            if row.Season_ID == '2020-21':
+                continue
+            # Get next season
+            weight = (1/row.Distance)
+            next_season = seasons[(seasons.index(row.Season_ID) + 1)]
+            # Find players next season, skip if doesn't exist
+            next_player = find_player(row.Name, next_season, ranked_df)
+            if next_player == None:
+                continue
+            sum_stat += getattr(next_player, col) * weight
+            sum_weight += weight
+        projected_stats['Name'] = player_name
+        projected_stats['Projected Season'] = seasons[(seasons.index(season_id) +1 )]
+        projected_stats['Projected_' + col] = (sum_stat / sum_weight)
+    
+    df_projected_stats = pd.DataFrame([projected_stats])
+    return df_projected_stats
+            
         
         

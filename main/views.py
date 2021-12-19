@@ -79,6 +79,14 @@ def index(request):
     df18_norm = pfunc.normalize_df(df18)
     df18_norm.insert(1,"Season_ID", "2017-18")
     
+    # Merge tables into master table
+    merged_df = pd.concat([df21_norm, df20_norm, df19_norm, df18_norm], axis=0)
+    
+    # merged_df = pfunc.clean(merged_df)
+    merged_df = merged_df.dropna(how='any')
+    min_gp = 10
+    merged_df = merged_df[merged_df['GP'] > min_gp]
+    
     
     # Create html table(s) for displaying
     df21finalNorm = df21_norm.to_html(index=False, justify='center', columns = [
@@ -88,16 +96,30 @@ def index(request):
         'Index', 'Season_ID', 'Name', 'Team', 'Position', 'GP', 'MPG', 'PPG', 'APG', 'RPG', 'SPG', 'BPG', 'FTp', 'TOPG', 'PPG_norm'
     ])
     
+    testing_player = "Stephen Curry"
     
-    test = pfunc.compare("Bradley Beal", "2020-21", df21_norm)
+    test = pfunc.compare(testing_player, "2020-21", merged_df)
     
-    numpy_compare = np.array(test)
-    df_compare = pd.DataFrame(numpy_compare, columns=["Name", "Season", "Difference", "Percent Error"])
+    projected_stats = pfunc.project_stats(testing_player, '2020-21', merged_df)
     
-    df_compare_final = df_compare.to_html(index=False, justify='center', columns = [
-        "Name", "Season", "Difference", "Percent Error"
+    # numpy_compare = np.array(test)
+    # df_compare = pd.DataFrame(numpy_compare, columns=["Name", "Season", "Difference", "Percent Error"])
+    
+    df_compare_final = test.to_html(index=False, justify='center', columns = [
+        "Name", "Season_ID", "Distance", 'PPG', 'APG', 'RPG', 'SPG', 'BPG', 'TOPG'
+    ])
+    
+    df_projected_stats = projected_stats.to_html(index=False, justify='center', columns = [
+        'Name', 'Projected Season', 'Projected_PPG', 'Projected_APG', 'Projected_RPG', 'Projected_SPG', 'Projected_BPG', 'Projected_TOPG'
     ])
     
     
-    context = {'df21': df21, 'df21_norm': df21_norm, 'df21finalNorm': df21finalNorm, 'df20finalNorm': df20finalNorm, 'df_compare_final': df_compare_final}
+    context = {
+        'df21': df21,
+        'df21_norm': df21_norm,
+        'df21finalNorm': df21finalNorm,
+        'df20finalNorm': df20finalNorm,
+        'df_compare_final': df_compare_final,
+        'df_projected_stats': df_projected_stats,
+        'testing_player': testing_player}
     return render(request, 'main/index.html', context)       # Path is relative from templates directory

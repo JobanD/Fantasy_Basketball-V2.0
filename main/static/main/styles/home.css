@@ -3,7 +3,8 @@
   text-align: center;
 }
 
-p {
+p,
+h3 {
   width: 100%;
   text-align: center;
 }
@@ -19,7 +20,7 @@ table th {
   padding: 8px;
 }
 
-table tr:nth-child(even) {
+table tr:nth-child(odd) {
   background-color: beige;
 }
 
