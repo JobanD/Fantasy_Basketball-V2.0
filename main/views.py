@@ -96,7 +96,17 @@ def index(request):
         'Index', 'Season_ID', 'Name', 'Team', 'Position', 'GP', 'MPG', 'PPG', 'APG', 'RPG', 'SPG', 'BPG', 'FTp', 'TOPG', 'PPG_norm'
     ])
     
-    testing_player = "Stephen Curry"
+    # SEARCH FOR PLAYER AND SET BASED ON USER INPUT
+     
+    testing_player = "Damian Lillard"
+
+    if request.method == "POST":
+        testing_player = request.POST.get('name')
+        print(testing_player)
+        if testing_player in players21:
+            return 
+        else:
+            print("incorrect name")
     
     test = pfunc.compare(testing_player, "2020-21", merged_df)
     
@@ -122,4 +132,5 @@ def index(request):
         'df_compare_final': df_compare_final,
         'df_projected_stats': df_projected_stats,
         'testing_player': testing_player}
+    
     return render(request, 'main/index.html', context)       # Path is relative from templates directory

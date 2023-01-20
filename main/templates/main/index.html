@@ -9,39 +9,49 @@
 {% block main_heading %}Fantasy Basketball Home{% endblock  %}
 
 {% block body %}
-    <h2 class="home_body_header">Welcome to the Projections Page!!</h2>
-    <p>Visit the <a href="/players">players</a> section to view analytics on the top fantasy basketball performers</p>
+    <div class="home_body_header">
+        <h2>Welcome to the Projections Page</h2>
+        <p>Visit the <a href="/players">players</a> section to view analytics on the top fantasy basketball performers</p>
 
-    {% for message in messages%}
-        <div class="alert alert-{{ message.tags }} alert-dismissable fade show" role="alert">
-        <strong>{{ message }}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
+        {% for message in messages%}
+            <div class="alert alert-{{ message.tags }} alert-dismissable fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+        {% endfor %}
+    
+        <div class="Projected-Player">
+
+            <form action="/./" method="POST">
+                {% csrf_token %}
+                <label>Enter name here:
+                    <input type="text" name="name">
+                </label>
+                <input type="submit" name="submit">
+            </form>
+
+            <h3>Projected Player Stats for the 2021-22 Season</h3>
+            <p>Current projected player is: <strong>{{ testing_player }}</strong></p>
+
+            {{ df_projected_stats|safe }}
         </div>
-    {% endfor %}
+        <br>
+        <span>Similarity of players is based off the following process:</span>
+        <ol>
+            <li> Normalizing Stats across seasons to adjust for pace, rule changes, player skill, etc.</li>
+            <li> Calculating Euclidean Distance between a given player and all other players from the 2017-18 season to the 2020-21 season</li>
+            <li> Finding the 10 most similar players to the given player </li>
+            <li> Using the next season statistics of the most similar players to project the given players next season statistics </li>
+        </ol>
 
-    <div class="Projected-Player">
-
-        <h3>Projected Player Stats for the 2021-22 Season</h3>
-        <p>Current projected player is: <strong>{{ testing_player }}</strong></p>
-
-        {{ df_projected_stats|safe }}
-    </div>
-    <br>
-    <span>Similarity of players is based off the following process:</span>
-    <ol>
-        <li> Normalizing Stats across seasons to adjust for pace, rule changes, player skill, etc.</li>
-        <li> Calculating Euclidean Distance between a given player and all other players from the 2017-18 season to the 2020-21 season</li>
-        <li> Finding the 10 most similar players to the given player </li>
-        <li> Using the next season statistics of the most similar players to project the given players next season statistics </li>
-    </ol>
-
-    <div class="Projections-List">
-        <h3>Below is a list of players most similar to {{ testing_player }}</h3>
-        {{ df_compare_final|safe }}
-        <!-- {{ df21finalNorm|safe }}
-        <h2>BREAK</h2>
-        {{ df20finalNorm|safe }} -->
+        <div class="Projections-List">
+            <h3>Below is a list of players most similar to {{ testing_player }}</h3>
+            {{ df_compare_final|safe }}
+            <!-- {{ df21finalNorm|safe }}
+            <h2>BREAK</h2>
+            {{ df20finalNorm|safe }} -->
+        </div>
     </div>
 {% endblock  %}

@@ -70,18 +70,18 @@ def compare(player_name, season_id, df):
     
     # Use list if different stats should have different weights
     # IMPORTANT: Keep list as long as list of stats being counted
-    weighted_nums = [ 1, 1, 1.5, 1.5, 0.5, 1, 1, 1, 1]
+    weighted_nums = [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     
     # Create vector for current players normalized stats
     current_player_vector = np.array([
         #(df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'MPG_norm']),
         (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FTA_norm']),
-        #(df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FTp_norm']),
+        (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FTp_norm']),
         (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FGA2_norm']),
-        #(df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FG2p_norm']),
+        (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FG2p_norm']),
         (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FGA3_norm']),
-        #(df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FG3p_norm']),
-        #(df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'EFG_norm']),
+        (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'FG3p_norm']),
+        (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'EFG_norm']),
         (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'PPG_norm']),
         (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'RPG_norm']),
         (df.loc[(df['Name'] == player_name) & (df['Season_ID'] == season_id), 'APG_norm']),
@@ -95,12 +95,12 @@ def compare(player_name, season_id, df):
         compared_player_vector = np.array([
             #row.MPG_norm,
             row.FTA_norm,
-            #row.FTp_norm,
+            row.FTp_norm,
             row.FGA2_norm,
-            #row.FG2p_norm,
+            row.FG2p_norm,
             row.FGA3_norm,
-            #row.FG3p,
-            #row.EFG_norm,
+            row.FG3p,
+            row.EFG_norm,
             row.PPG_norm,
             row.RPG_norm,
             row.APG_norm,
