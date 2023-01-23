@@ -91,6 +91,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -139,8 +141,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'players/static/players'),
     os.path.join(BASE_DIR, 'teams/static/teams'),
 ]
-
-STATIC_ROOT = '/var/www/fantasy_basketball/assets/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
